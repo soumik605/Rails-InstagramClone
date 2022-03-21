@@ -1,0 +1,8 @@
+<div class="container-sm">
+    <%= form_with model:@post do |f| %>
+        <%= render(:partial => 'form', :locals => {:f => f}) %>
+         <div class="actions">
+            <%= f.submit "Post" , class: "btn btn-primary" %>
+        </div>
+    <% end %>
+</div>

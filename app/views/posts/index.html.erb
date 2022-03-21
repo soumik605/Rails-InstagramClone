@@ -1,0 +1,43 @@
+
+<% @posts.each do |post| %>
+  <div class="card mt-2 shadow" style="width: 30rem;">
+    <div class="row px-3 py-1">
+        <p class="card-title col"><%= post.user.fullname %></p>
+        <% if post.user.id == current_user.id%>
+            <div class="dropdown col-2">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    More
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><%= link_to("Edit", edit_post_path(post) , :class => "dropdown-item" ) %></li>
+                    <li><%= button_to "delete", {:action => 'destroy', :id => post.id }, :method => :delete , :class => "dropdown-item" %></li>
+                </ul>
+            </div>
+        <% end %>
+    </div>
+    <%= image_tag("https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg") %>
+    <div class="card-body">
+
+
+    <%= form_with model: @like, url: like_path(post), class: "float-right", remote: true do |f| %>
+        <% if current_user.liked?(post) %>
+            <%= f.submit "Unlike" , class: "btn btn-primary" %>
+        <% else %>
+            <%= f.submit "Like" , class: "btn btn-primary" %>
+        <% end %> 
+    <% end %>
+
+    <br />
+
+        <h5 class="card-title"><%= post.title %></h5>
+        <p class="card-text"><%= post.likes.count || 0 %> Likes</p>
+
+        <% post.comments.each do |comment| %>
+           <%= render partial: "comments/comment", locals: {comment: comment} %>
+        <% end %>
+
+        <%= render partial: "comments/form", locals: {post: post} %>
+
+    </div>
+</div>
+<%end %><br />

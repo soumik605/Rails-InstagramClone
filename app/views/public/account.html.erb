@@ -1,0 +1,47 @@
+<div class="container-md py-3">
+
+    <div class="row pb-5">
+        <div class="col-6">
+            <%= image_tag 'https://cdn4.iconfinder.com/data/icons/user-people-2/48/6-512.png',class: 'w-100 rounded-circle d-block p-0 shadow mx-auto',style:'max-width:8rem;'
+            %>
+        </div>
+        <div class="col-6">
+            <div class="row pb-3">
+                <h3 class="fw-light col-4" ><%= current_user.username %></h3>
+
+                <% if @is_current_user %>
+                    <%= link_to "Edit Profile", "#" , class: "btn btn-outline-dark col-3" %>
+                <% elsif current_user.following?(@user) %>
+                    <%= button_to "Unfolow", unfollow_path(@user) , :method => :delete , class: "btn btn-outline-dark col-3"  %>
+                <% else %>
+                    <%= button_to "Follow", follow_path(@user) ,:method => :post , class: "btn btn-outline-dark col-3"  %>
+                <% end %>
+
+            </div>
+            <div class="row pb-3">
+                <p class="col-4" ><%= current_user.posts.count %> Posts</p>
+                <p class="col-4" ><%= current_user.followers_count || 0 %> Follower</p>
+                <p class="col-4" ><%= current_user.follow_count || 0 %> Following</p>
+            </div>
+            <p><%= current_user.bio %></p>
+        </div>
+    </div><hr  style="max-width: 700px;" class="mx-auto" />
+
+    <div style="max-width: 700px;" class=" row mx-auto">
+        <% current_user.posts.each do |post| %>
+            <div class="col-4 pb-3" >
+                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
+            </div>
+            <div class="col-4 pb-3" >
+                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
+            </div>
+            <div class="col-4 pb-3" >
+                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
+            </div>
+            <div class="col-4 pb-3" >
+                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
+            </div>
+        <% end %>
+    </div>
+
+</div>

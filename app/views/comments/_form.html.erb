@@ -1,0 +1,6 @@
+<%= form_with model: @comment, url: addcomment_path(post), class: "float-right", remote: true do |f| %>
+        <div class="field mb-2 row ">
+            <%= f.text_field :body, class: "form-control col"%>
+            <%= f.submit "Add Comment" , class: "btn btn-primary btn-sm col-3" %>
+        </div>
+    <% end %>
