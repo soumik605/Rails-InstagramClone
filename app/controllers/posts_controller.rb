@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :fetch_all_posts_and_users
+  before_action :check_post_by_Id, only: [:show, :edit, :update, :destroy]
 
   def index
   end
@@ -50,11 +51,20 @@ class PostsController < ApplicationController
     params.require(:post).permit(:title, :image, :total_likes)
   end
 
-
-
   def fetch_all_posts_and_users
     @posts = Post.all
     @users = User.all
   end
+
+  def check_post_by_Id
+    if params[:id]
+      @post = Post.exists?(params[:id])
+      unless @post
+          redirect_to posts_path
+          flash[:notice] = "No such post found !"
+      end
+    end
+  end
+
 
 end
