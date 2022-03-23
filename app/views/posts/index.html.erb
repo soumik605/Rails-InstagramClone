@@ -1,43 +1,65 @@
+<div class="container-md row pt-3">
+    <div class="col-8 ">
+        <% @posts.each do |post| %>
+            <div class="card mb-2 shadow mx-auto" style="width: 35rem;">
+                <div class="row px-3 py-1">
+                    <p class="card-title col"><%= link_to  post.user.fullname, account_path(post.user), class: "text-body text-decoration-none" %></p>
+                    <% if post.user.id == current_user.id%>
+                        <div class="dropdown col-2">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                More
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><%= link_to("Edit", edit_post_path(post) , :class => "dropdown-item" ) %></li>
+                                <li><%= button_to "delete", {:action => 'destroy', :id => post.id }, :method => :delete , :class => "dropdown-item" %></li>
+                            </ul>
+                        </div>
+                    <% end %>
+                </div>
 
-<% @posts.each do |post| %>
-  <div class="card mt-2 shadow" style="width: 30rem;">
-    <div class="row px-3 py-1">
-        <p class="card-title col"><%= post.user.fullname %></p>
-        <% if post.user.id == current_user.id%>
-            <div class="dropdown col-2">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    More
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><%= link_to("Edit", edit_post_path(post) , :class => "dropdown-item" ) %></li>
-                    <li><%= button_to "delete", {:action => 'destroy', :id => post.id }, :method => :delete , :class => "dropdown-item" %></li>
-                </ul>
+                <div class="img">
+                    <a href="<%= post_path(post) %>" ><img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" class="img-fluid" alt="Responsive image"></a>
+                </div>
+
+
+                <div class="card-body">
+                    <%= render partial: "likes/form", locals: {post: post} %><br />
+                    <h5 class="card-title"><%= post.title %></h5>
+                    <p class="card-text"><%= link_to "#{post.likes.count} Likes", post_likes_path(post), class: "text-body text-decoration-none"  %>  ||  <%= post.comments.count || 0 %> Comments</p>
+                    <% post.comments.first(4).each do |comment| %>
+                        <%= render partial: "comments/comment", locals: {comment: comment, post: post} %>
+                    <% end %>
+                    <%= render partial: "comments/form", locals: {post: post} %>
+                </div>
             </div>
-        <% end %>
+        <%end %>
     </div>
-    <%= image_tag("https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg") %>
-    <div class="card-body">
+    <div class="col-4">
 
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <div class="d-flex justify-content-start align-items-center">
+                <%= image_tag 'https://cdn4.iconfinder.com/data/icons/user-people-2/48/6-512.png',class: 'w-100 rounded-circle d-block p-0',style:'max-width:3rem; border-radius:50%'%>
+                <div class="align-items-center">
+                    <p class="mx-2 my-0"><%= link_to  current_user.username, account_path(current_user), class: "text-body text-decoration-none" %></p>
+                    <p class="mx-2 my-0 fw-light"><%= current_user.fullname %></p>
+                </div>
+            </div>
+            <%= button_to "Switch" , "#", class: "btn text-primary" %>
+        </div><hr />
 
-    <%= form_with model: @like, url: like_path(post), class: "float-right", remote: true do |f| %>
-        <% if current_user.liked?(post) %>
-            <%= f.submit "Unlike" , class: "btn btn-primary" %>
-        <% else %>
-            <%= f.submit "Like" , class: "btn btn-primary" %>
-        <% end %> 
-    <% end %>
+        <div class="d-flex align-items-center justify-content-between">
+            <p class="my-0" >Suggestions For You</p>
+            <%= link_to "See all" , suggestion_path, class: "btn" %>
+        </div>
 
-    <br />
-
-        <h5 class="card-title"><%= post.title %></h5>
-        <p class="card-text"><%= post.likes.count || 0 %> Likes</p>
-
-        <% post.comments.each do |comment| %>
-           <%= render partial: "comments/comment", locals: {comment: comment} %>
-        <% end %>
-
-        <%= render partial: "comments/form", locals: {post: post} %>
-
+        <ul class="list-group list-group-flush">
+            <% @users.first(5).each do |user| %>
+                 <li class="list-group-item p-1"><%= render partial: "public/user", locals: {user: user} %></li>
+            <% end %>
+           
+        </ul>
     </div>
 </div>
-<%end %><br />
+
+
+

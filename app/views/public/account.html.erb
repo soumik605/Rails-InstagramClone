@@ -7,11 +7,11 @@
         </div>
         <div class="col-6">
             <div class="row pb-3">
-                <h3 class="fw-light col-4" ><%= current_user.username %></h3>
+                <h3 class="fw-light col-4" ><%= @user.username %></h3>
 
                 <% if @is_current_user %>
                     <%= link_to "Edit Profile", "#" , class: "btn btn-outline-dark col-3" %>
-                <% elsif current_user.following?(@user) %>
+                <% elsif @user.following?(@user) %>
                     <%= button_to "Unfolow", unfollow_path(@user) , :method => :delete , class: "btn btn-outline-dark col-3"  %>
                 <% else %>
                     <%= button_to "Follow", follow_path(@user) ,:method => :post , class: "btn btn-outline-dark col-3"  %>
@@ -19,29 +19,22 @@
 
             </div>
             <div class="row pb-3">
-                <p class="col-4" ><%= current_user.posts.count %> Posts</p>
-                <p class="col-4" ><%= current_user.followers_count || 0 %> Follower</p>
-                <p class="col-4" ><%= current_user.follow_count || 0 %> Following</p>
+                <p class="col-4" ><%= @user.posts.count %> Posts</p>
+                <p class="col-4" ><%= link_to "#{@user.followers_count} Follower", friend_path, class: "text-body text-decoration-none" %> </p>
+                <p class="col-4" ><%= link_to "#{@user.follow_count} Following", friend_path, class: "text-body text-decoration-none" %> </p>
             </div>
-            <p><%= current_user.bio %></p>
+            <p><%= @user.bio %></p>
         </div>
     </div><hr  style="max-width: 700px;" class="mx-auto" />
 
     <div style="max-width: 700px;" class=" row mx-auto">
-        <% current_user.posts.each do |post| %>
-            <div class="col-4 pb-3" >
-                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
-            </div>
-            <div class="col-4 pb-3" >
-                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
-            </div>
-            <div class="col-4 pb-3" >
-                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
-            </div>
-            <div class="col-4 pb-3" >
-                <%= image_tag 'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg',class: 'w-100' %>
+
+        <% @user.posts.each do |post| %>
+            <div class="img col-4 pb-3">
+                <a href="<%= post_path(post) %>" ><img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" class="img-fluid" alt="Responsive image"></a>
             </div>
         <% end %>
+
     </div>
 
 </div>

@@ -1,0 +1,7 @@
+<%= form_with model: @like, url: post_likes_path(post_id: post.id), method: :post,class: "float-right", remote: true do |f| %>
+    <% if current_user.liked?(post) %>
+        <%= f.submit "Unlike" , class: "btn btn-primary" %>
+    <% else %>
+        <%= f.submit "Like" , class: "btn btn-primary" %>
+    <% end %> 
+<% end %>

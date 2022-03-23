@@ -1,14 +1,15 @@
- <div class="row">
-    <p class="card-text col"><%= comment.user.fullname  %> - <%= comment.body  %></p> 
+ <div class="row hover-parent">
+    <p class="card-text col"><strong><%= link_to  comment.user.fullname, account_path(comment.user), class: "text-body text-decoration-none" %></strong> - <%= comment.body  %></p> 
+
+
     <% if comment.user.id == current_user.id%>
     <div class="dropdown col-2">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <button   class="btn btn-secondary btn-sm dropdown-toggle hover-child" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 More
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item disabled" href="#">Edit</a></li>
-                <li><%= button_to "delete", {:controller => :posts,:action => 'deletecomment', :id => comment.id }, :method => :delete, class: "dropdown-item" %></li>
-      
+                <li><%= button_to "delete", post_comment_path(post_id: post.id, id: comment.id ), :method => :delete, class: "dropdown-item" %></li>
             </ul>
         </div>
     <% end %>

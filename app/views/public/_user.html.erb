@@ -1,0 +1,10 @@
+ <div class="d-flex justify-content-between align-items-center p-2">
+    <div class="d-flex justify-content-start align-items-center">
+        <%= image_tag 'https://cdn4.iconfinder.com/data/icons/user-people-2/48/6-512.png',class: 'w-100 rounded-circle d-block p-0',style:'max-width:40px; border-radius:50%'%>
+        <div class="align-items-center">
+            <p class="mx-2 my-0"><%= link_to  user.username, account_path(user), class: "text-body text-decoration-none" %></p>
+            <h6 class="mx-2 my-0 fw-light"><%= user.fullname %></h6>
+        </div>
+    </div>
+    <%= button_to "Follow" , "#", class: "btn text-primary" %>
+</div>
