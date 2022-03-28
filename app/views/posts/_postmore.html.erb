@@ -1,0 +1,18 @@
+
+<div class="row px-3 py-1">
+    <p class="card-title col"><%= link_to  post.user.fullname, account_path(post.user), class: "text-body text-decoration-none" %></p>
+    <% if can? :destroy, post %>
+        <div class="dropdown col-2">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                More
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <% if can? :update, post %>
+                    <li><%= link_to("Edit", edit_post_path(post) , :class => "dropdown-item" ) %></li>
+                <% end %>
+                <li><%= button_to "delete", {:action => 'destroy', :id => post.id }, :method => :delete , :class => "dropdown-item" %></li>
+            </ul>
+        </div>
+    <% end %>
+    
+</div>

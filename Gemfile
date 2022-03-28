@@ -41,8 +41,8 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
-
 gem 'devise', '~> 4.8', '>= 4.8.1'
+gem 'cancancan', '~> 3.3'
 gem 'acts_as_follower', github: 'tcocca/acts_as_follower', branch: 'master'
 
 # Use Sass to process CSS

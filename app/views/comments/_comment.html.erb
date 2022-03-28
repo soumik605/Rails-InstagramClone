@@ -2,13 +2,15 @@
     <p class="card-text col"><strong><%= link_to  comment.user.fullname, account_path(comment.user), class: "text-body text-decoration-none" %></strong> - <%= comment.body  %></p> 
 
 
-    <% if comment.user.id == current_user.id%>
-    <div class="dropdown col-2  hover-child">
+    <% if can? :destroy, comment  %>
+        <div class="dropdown col-2  hover-child">
             <button   class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 More
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item disabled" href="#">Edit</a></li>
+                <% if can? :update, comment  %>
+                    <li><a class="dropdown-item disabled" href="#">Edit</a></li>
+                <% end %>
                 <li><%= button_to "delete", post_comment_path(post_id: post.id, id: comment.id ), :method => :delete, class: "dropdown-item" %></li>
             </ul>
         </div>

@@ -1,7 +1,9 @@
 <div class="row mt-3 container-md shadow border rounded p-2 mb-5 mx-auto">
 
     <div class="col-7">
-        <p class="card-title col"><%= link_to  @post.user.fullname, account_path(@post.user), class: "text-body text-decoration-none" %></p>
+
+        <%= render partial: "postmore", locals: {post: @post} %>
+       
         <div class="img mb-2">
             <img src="https://cdn.britannica.com/67/19367-050-885866B4/Valley-Taurus-Mountains-Turkey.jpg" class="img-fluid" alt="Responsive image">
         </div>

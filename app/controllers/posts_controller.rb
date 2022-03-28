@@ -1,70 +1,72 @@
 class PostsController < ApplicationController
+  before_action :set_post, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
-  before_action :fetch_all_posts_and_users
-  before_action :check_post_by_Id, only: [:show, :edit, :update, :destroy]
+
+  load_and_authorize_resource
 
   def index
-  end
-
-  def show
-    @post = Post.find(params[:id])
-  end
-
-  def new
-    @post = Post.new
-  end
-
-  def create
-    @post = Post.new(post_params)
-    @post.user = current_user
-
-    if @post.save
-      render :show
-    else
-      #render json: { errors: @post.errors }, status: :unprocessable_entity
-      render :new
-    end
-  end
-
-  def edit
-    @post = Post.find(params[:id])
-  end
-
-  def update
-    @post = Post.find(params[:id])
-    if @post.update(post_params)
-      redirect_to(post_path(@post))
-    else
-      render('edit')
-    end
-  end
-
-  def destroy
-    Post.destroy(params[:id])
-  end
-
-  
-
-  private
-
-  def post_params
-    params.require(:post).permit(:title, :image, :total_likes)
-  end
-
-  def fetch_all_posts_and_users
-    @posts = Post.all
     @users = User.all
   end
 
-  def check_post_by_Id
-    if params[:id]
-      @post = Post.exists?(params[:id])
-      unless @post
-          redirect_to posts_path
-          flash[:notice] = "No such post found !"
+  def show
+  end
+
+  def new
+  end
+
+  def create
+    @post = Post.new(post_params)   #to keep params if error happens
+    @post.user = current_user
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
 
+  def edit
+  end
+  
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
+  
+  def destroy
+    @post.destroy
+
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+  
+    def set_post
+      if Post.exists?(params[:id])
+        @post = Post.find_by(id: params[:id])
+      else
+        flash[:notice] = "No such post found !!"
+        redirect_to posts_path
+      end
+    end
+
+    
+    def post_params
+      params.require(:post).permit(:title, :user_id)
+    end
 end
